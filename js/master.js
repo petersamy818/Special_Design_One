@@ -18,6 +18,26 @@ let backgroundOption = true;
 // Variable To Control The Background Interval
 let backgroundInterval;
 
+// Check If There Is Local Storage Random Background Item
+let backgroundLocalItem = localStorage.getItem("background_option");
+// Check If Random Background Local Storage Is Not Empty
+if (backgroundLocalItem !== null) {
+    if (backgroundLocalItem === "true") {
+        backgroundOption = true;
+    } else {
+        backgroundOption = false;
+    }
+    // Remove Class Active From All Spans
+    document.querySelectorAll(".random-backgrounds span").forEach(element => {
+        element.classList.remove("active");
+    })
+    if (backgroundLocalItem === "true") {
+        document.querySelector(".random-backgrounds .yes").classList.add("active");
+    } else {
+        document.querySelector(".random-backgrounds .no").classList.add("active");
+    }
+}
+
 // Toggle Spin Class On Icon-----------------------------------------------------
 document.querySelector(".toggle-settings .settings-gear").onclick = function () {
     // Toggle Class fa-spin For Rotation On Self
@@ -60,9 +80,11 @@ randomBackEl.forEach(span => {
         if (e.target.dataset.background === "yes") {
             backgroundOption = true;
             randomizeImgs();
+            localStorage.setItem("background_option", true);
         } else {
             backgroundOption = false;
             clearInterval(backgroundInterval);
+            localStorage.setItem("background_option", false);
         }
     });
 });
